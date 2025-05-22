@@ -16,7 +16,7 @@ MonoBehaviour:
   description: "\uADF8\uB0E5 \uB3CC\uC785\uB2C8\uB2E4."
   type: 0
   icon: {fileID: 21300000, guid: e61976ceaf6919c47853f5a7ea09288b, type: 3}
-  dropPrefab: {fileID: 0}
+  dropPrefab: {fileID: 2365475279149625602, guid: a2c583a9c6494df4a82840012969f2b3, type: 3}
   value: 0
   effectDuration: 0
   effectType: 0

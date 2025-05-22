@@ -130,9 +130,9 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    public void OnInventoryButton(InputAction.CallbackContext callbackContext)
+    public void OnInventoryButton(InputAction.CallbackContext context)
     {
-        if (callbackContext.phase == InputActionPhase.Started)
+        if (context.phase == InputActionPhase.Started)
         {
             inventory?.Invoke();
             ToggleCursor();

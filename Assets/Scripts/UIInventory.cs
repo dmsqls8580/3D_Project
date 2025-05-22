@@ -93,7 +93,7 @@ public class UIInventory : MonoBehaviour
         // 10강 ItemObject 로직에서 Player에 넘겨준 정보를 가지고 옴
         ItemData data = CharacterManager.Instance.Player.itemData;
 
-        // 여러개 가질 수 있는 아이템이라면
+        // 아이템이 중복 가능한지
         if (data.canStack)
         {
             ItemSlot slot = GetItemStack(data);
