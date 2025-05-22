@@ -12,7 +12,8 @@ public enum ItemType
 public enum ConsumableType
 {
     Hunger,
-    Health
+    Health,
+    Speed
 }
 
 public enum EquipableTyep
@@ -20,17 +21,13 @@ public enum EquipableTyep
     Weapon,
     Armor
 }
-public enum EffectType
-{
-    SpeedBoost,
-    // 다른 효과 유형 추가 가능
-}
 
 [System.Serializable]
 public class ItemDataConsumable
 {
     public ConsumableType type;
     public float value;
+    public float duration;
 }
 
 [CreateAssetMenu(fileName = "Item", menuName = "New Item")]
@@ -44,7 +41,6 @@ public class ItemData : ScriptableObject
     public GameObject dropPrefab;
     public int value;
     public float effectDuration;
-    public EffectType effectType;
 
     [Header("Stacking")]
     public bool canStack;

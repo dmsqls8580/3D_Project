@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -146,25 +147,26 @@ public class PlayerController : MonoBehaviour
         canLook = !toggle;
     }
 
-    //// 아이템 효과 적용 메서드 추가
-    //public void ApplyEffect(ItemData item)
-    //{
-    //    if (item.effectType == ItemData.EffectType.SpeedBoost)
-    //    {
-    //        if (activeEffectCoroutine != null)
-    //        {
-    //            StopCoroutine(activeEffectCoroutine);
-    //        }
-    //        activeEffectCoroutine = StartCoroutine(SpeedBoost(item.effectDuration));
-    //    }
-    //}
+    private Coroutine speedBoostCoroutine;
 
-    //private IEnumerator SpeedBoost(float duration)
-    //{
-    //    MoveSpeed = originalMoveSpeed * 2; // 속도를 두 배로 증가
-    //    yield return new WaitForSeconds(duration); // 지속 시간 동안 대기
-    //    MoveSpeed = originalMoveSpeed; // 속도를 원래대로 복원
-    //    activeEffectCoroutine = null;
-    //}
+    public void ApplySpeedBoost(float multiplier, float duration)
+    {
+        if (speedBoostCoroutine != null)
+        {
+            StopCoroutine(speedBoostCoroutine);
+        }
 
+        speedBoostCoroutine = StartCoroutine(SpeedBoostRoutine(multiplier, duration));
+    }
+
+    private IEnumerator SpeedBoostRoutine(float multiplier, float duration)
+    {
+        float originalSpeed = moveSpeed;
+        moveSpeed *= multiplier;
+
+        yield return new WaitForSeconds(duration);
+
+        moveSpeed = originalSpeed;
+        speedBoostCoroutine = null;
+    }
 }
