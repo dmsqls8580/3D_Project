@@ -22,6 +22,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public bool canLook = true;
 
+    public Action inventory;
+
     private Rigidbody rigidbody;
 
     private void Awake()
@@ -128,9 +130,41 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    public void ToggleCursor(bool toggle)
+    public void OnInventoryButton(InputAction.CallbackContext callbackContext)
     {
+        if (callbackContext.phase == InputActionPhase.Started)
+        {
+            inventory?.Invoke();
+            ToggleCursor();
+        }
+    }
+
+    public void ToggleCursor()
+    {
+        bool toggle = Cursor.lockState == CursorLockMode.Locked;
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
         canLook = !toggle;
     }
+
+    //// 아이템 효과 적용 메서드 추가
+    //public void ApplyEffect(ItemData item)
+    //{
+    //    if (item.effectType == ItemData.EffectType.SpeedBoost)
+    //    {
+    //        if (activeEffectCoroutine != null)
+    //        {
+    //            StopCoroutine(activeEffectCoroutine);
+    //        }
+    //        activeEffectCoroutine = StartCoroutine(SpeedBoost(item.effectDuration));
+    //    }
+    //}
+
+    //private IEnumerator SpeedBoost(float duration)
+    //{
+    //    MoveSpeed = originalMoveSpeed * 2; // 속도를 두 배로 증가
+    //    yield return new WaitForSeconds(duration); // 지속 시간 동안 대기
+    //    MoveSpeed = originalMoveSpeed; // 속도를 원래대로 복원
+    //    activeEffectCoroutine = null;
+    //}
+
 }
