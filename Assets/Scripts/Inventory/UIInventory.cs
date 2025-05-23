@@ -17,7 +17,7 @@ public class UIInventory : MonoBehaviour
 
         inventoryManager.onInventoryChanged += UpdateUI;
 
-        // Inventory UI 초기화 로직들
+        // Inventory UI 초기화
         inventoryWindow.SetActive(false);
 
         itemDropper.dropPosition = CharacterManager.Instance.Player.dropPosition;
