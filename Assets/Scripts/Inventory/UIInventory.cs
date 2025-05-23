@@ -64,26 +64,63 @@ public class UIInventory : MonoBehaviour
             }
         }
     }
-
     public void OnUseButton()
     {
         var selected = selectedHandler.GetSelectedItemSlot();
-        var condition = CharacterManager.Instance.Player.condition;
-        var controller = CharacterManager.Instance.Player.controller;
+        var player = CharacterManager.Instance.Player;
 
-        foreach (var effect in selected.item.consumables)
+        foreach (var effectData in selected.item.consumables)
         {
-            switch (effect.type)
-            {
-                case ConsumableType.Health: condition.Heal(effect.value); break;
-                case ConsumableType.Hunger: condition.Eat(effect.value); break;
-                case ConsumableType.Speed: controller.ApplySpeedBoost(effect.value, effect.duration);
-                    break;
-            }
+            var effect = ConsumableEffectFactory.GetEffect(effectData.type);
+            effect?.Apply(player, effectData.value, effectData.duration);
         }
+
         inventoryManager.RemoveItem(selectedHandler.GetSelectedItemIndex());
         selectedHandler.Clear();
         UpdateUI();
+    }
+
+    public interface IConsumableEffect
+    {
+        void Apply(Player player, float value, float duration);
+    }
+
+    public class HealEffect : IConsumableEffect
+    {
+        public void Apply(Player player, float value, float duration)
+        {
+            player.condition.Heal(value);
+        }
+    }
+
+    public class HungerEffect : IConsumableEffect
+    {
+        public void Apply(Player player, float value, float duration)
+        {
+            player.condition.Eat(value);
+        }
+    }
+
+    public static class ConsumableEffectFactory
+    {
+        public static IConsumableEffect GetEffect(ConsumableType type)
+        {
+            return type switch
+            {
+                ConsumableType.Health => new HealEffect(),
+                ConsumableType.Hunger => new HungerEffect(),
+                ConsumableType.Speed => new SpeedBoostEffect(),
+                _ => null
+            };
+        }
+    }
+
+    public class SpeedBoostEffect : IConsumableEffect
+    {
+        public void Apply(Player player, float value, float duration)
+        {
+            player.controller.ApplySpeedBoost(value, duration);
+        }
     }
 
     public void OnDropButton()
